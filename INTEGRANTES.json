@@ -1,32 +1,32 @@
 {
   "aluno-1": {
-    "nome": "Carlos Dip",
-    "email-insper": "carlosed3@al.insper.edu.br",
-    "user-github": "CEDipEngineering"
+    "nome": "",
+    "email-insper": "",
+    "user-github": ""
   },
   "aluno-2": {
-    "nome": "Lucas Fukada",
-    "email-insper": "lucaskf@al.insper.edu.br",
-    "user-github": "Lucaskf1996"
+    "nome": "",
+    "email-insper": "",
+    "user-github": ""
   },
   "aluno-3": {
-    "nome": "João Gianfaldoni",
-    "email-insper": "joaopga1@al.insper.edu.br",
-    "user-github": "JPGianfaldoni"
+    "nome": "",
+    "email-insper": "",
+    "user-github": ""
   },
   "aluno-4": {
-    "nome": "Eiki Santos",
-    "email-insper": "eikily@al.insper.edu.br",
-    "user-github": "EikiSantos"
+    "nome": "",
+    "email-insper": "",
+    "user-github": ""
   },
   "aluno-5": {
-    "nome": "Henrique Mualem",
-    "email-insper": "henriquemm3@al.insper.edu.br",
-    "user-github": "Maulem"
+    "nome": "",
+    "email-insper": "",
+    "user-github": ""
   },
   "aluno-6": {
-    "nome": "Marcelo Miguel",
-    "email-insper": "marcelocm8@al.insper.edu.br",
-    "user-github": "Marcelo-Cesario-Miguel"
+    "nome": "",
+    "email-insper": "",
+    "user-github": ""
   }
 }
