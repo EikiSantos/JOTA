@@ -4,7 +4,7 @@
 #                                    # 
 # Arquivos de teste do projeto B     #
 #  - Para incluir o teste basta      #
-#  descomentar a linha               #
+#  descomentar a linha.               #
 #                                    #
 ######################################
 
@@ -26,5 +26,5 @@ Mux8Way16.vhd
 #BarrelShifter16.vhd
 #circuito.vhd    
 #detectorDeMoedas.vhd
-#impressora.vhd
+impressora.vhd
 #sevenSeg.vhd
