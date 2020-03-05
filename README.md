@@ -15,3 +15,14 @@ $ updateZ01tools.sh
 $ # instale as dependencias python
 $ pip install -r requirements.txt --user
 ```
+
+
+
+Vídeos do display de 7 segmentos da FPGA:
+
+[![Hexadecimal no FPGA](https://res.cloudinary.com/marcomontalbano/image/upload/v1583444450/video_to_markdown/images/youtube--m0UBh3lKe5Q-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/m0UBh3lKe5Q "Hexadecimal no FPGA")
+
+
+
+
+[![Decimal no FPGA](https://res.cloudinary.com/marcomontalbano/image/upload/v1583444915/video_to_markdown/images/youtube--7tcXITCfEuU-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://youtu.be/7tcXITCfEuU "Decimal no FPGA")
