@@ -13,7 +13,6 @@ Or16.vhd
 Nor8Way.vhd
 And16.vhd
 Not16.vhd
-<<<<<<< HEAD
 Or8Way.vhd
 DMux2Way.vhd
 DMux4Way.vhd
@@ -22,17 +21,7 @@ Mux2Way.vhd
 Mux4Way.vhd
 Mux16.vhd
 Mux4Way16.vhd
-=======
-#Or8Way.vhd
-#DMux2Way.vhd
-#DMux4Way.vhd
-#DMux8Way.vhd
-Mux2Way.vhd
-#Mux4Way.vhd
-#Mux16.vhd
-#Mux4Way16.vhd
->>>>>>> b2f7c7150799c98ebef1b5f79e381228090d9861
-#Mux8Way.vhd
+Mux8Way.vhd
 Mux8Way16.vhd
 #BarrelShifter16.vhd
 circuito.vhd    
