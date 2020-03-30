@@ -68,14 +68,6 @@ architecture  rtl OF alu is
 		);
 	end component;
 
-	component And16 is
-		port (
-			a:   in  STD_LOGIC_VECTOR(15 downto 0);
-			b:   in  STD_LOGIC_VECTOR(15 downto 0);
-			q:   out STD_LOGIC_VECTOR(15 downto 0)
-		);
-	end component;
-
 	component comparador16 is
 		port(
 			a   : in STD_LOGIC_VECTOR(15 downto 0);
@@ -92,10 +84,68 @@ architecture  rtl OF alu is
 			q:   out STD_LOGIC_VECTOR(15 downto 0)
 		);
 	end component;
+	
+   SIGNAL zxout,zyout,nxout,nyout,andout,adderout,muxout,precomp: std_logic_vector(15 downto 0);	
 
-   SIGNAL zxout,zyout,nxout,nyout,andout,adderout,muxout,precomp: std_logic_vector(15 downto 0);
-
+--    when zx = '0' zxout <= x else zxout <= "0000000000000000";
+--    when nx = '0' nxout <= zxout else nxout <= !zxout;
+--    when zy = '0' zyout <= y else zyout <= "0000000000000000";
+--    when ny = '0' nyout <= zyout else nyout <= !zyout;
+--    andout <= nxout and nyout;
+--    adderout <= 
 begin
   -- Implementação vem aqui!
+	z1: zerador16 port map (
+		z => zx,
+		a => x,
+		y => zxout
+	);
+
+	z2: zerador16 port map (
+		z => zy,
+		a => y,
+		y => zyout
+	);
+
+	i1: inversor16 port map (	
+		z => nx,
+		a => zxout,
+		y => nxout
+	);
+
+	i2: inversor16 port map (	
+		z => ny,
+		a => zyout,
+		y => nyout
+	);
+
+	andout <= nxout and nyout;
+
+	add: Add16 port map (
+		a => nxout,
+		b => nyout,
+		q => adderout
+	);
+
+	mux: mux16 port map(
+		a => andout,
+		b => adderout,
+		sel => f,
+		q => muxout
+	);
+
+	i3: inversor16 port map (	
+		z => no,
+		a => muxout,
+		y => precomp
+	);
+
+	saida <= precomp;
+
+	comp: comparador16 port map (
+		a => precomp,
+		zr => zr,
+		ng => ng
+	);
 
 end architecture;
