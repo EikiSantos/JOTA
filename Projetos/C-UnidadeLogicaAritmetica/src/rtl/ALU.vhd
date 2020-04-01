@@ -33,7 +33,7 @@ entity ALU is
 			nx:    in STD_LOGIC;                     -- inverte a entrada x
 			zy:    in STD_LOGIC;                     -- zera a entrada y
 			ny:    in STD_LOGIC;                     -- inverte a entrada y
-			f:     in STD_LOGIC;                     -- se 0 calcula x & y, senão x + y
+			f:     in STD_LOGIC_VECTOR(1 downto 0);  -- se 0 calcula x & y, senão x + y
 			no:    in STD_LOGIC;                     -- inverte o valor da saída
 			zr:    out STD_LOGIC;                    -- setado se saída igual a zero
 			ng:    out STD_LOGIC;                    -- setado se saída é negativa
@@ -68,24 +68,35 @@ architecture  rtl OF alu is
 		);
 	end component;
 
-	component comparador16 is
-		port(
-			a   : in STD_LOGIC_VECTOR(15 downto 0);
-			zr   : out STD_LOGIC;
-			ng   : out STD_LOGIC
-    );
+	component BarrelShifter16 is
+		port ( 
+			a:    in  STD_LOGIC_VECTOR(15 downto 0);   -- input vector
+			dir:  in  STD_LOGIC;                       -- 0=>left 1=>right
+			size: in  STD_LOGIC_VECTOR(2 downto 0);    -- shift amount
+			q:    out STD_LOGIC_VECTOR(15 downto 0)    -- output vector (shifted)
+		);
 	end component;
 
-	component Mux16 is
+	component comparador16 is
+		port(
+			a    : in STD_LOGIC_VECTOR(15 downto 0);
+			zr   : out STD_LOGIC;                  
+			ng   : out STD_LOGIC
+   		 );
+	end component;
+
+	component Mux4Way16 is
 		port (
 			a:   in  STD_LOGIC_VECTOR(15 downto 0);
 			b:   in  STD_LOGIC_VECTOR(15 downto 0);
-			sel: in  STD_LOGIC;
+			c:   in  STD_LOGIC_VECTOR(15 downto 0);
+			D:   in  STD_LOGIC_VECTOR(15 downto 0);
+			sel: in  STD_LOGIC_VECTOR(1 downto 0);
 			q:   out STD_LOGIC_VECTOR(15 downto 0)
 		);
 	end component;
 	
-   SIGNAL zxout,zyout,nxout,nyout,andout,adderout,muxout,precomp: std_logic_vector(15 downto 0);	
+   SIGNAL zxout,zyout,nxout,nyout,andout,adderout,barrelout,muxout,precomp: std_logic_vector(15 downto 0);	
 
 --    when zx = '0' zxout <= x else zxout <= "0000000000000000";
 --    when nx = '0' nxout <= zxout else nxout <= !zxout;
@@ -94,7 +105,7 @@ architecture  rtl OF alu is
 --    andout <= nxout and nyout;
 --    adderout <= 
 begin
-  -- Implementação vem aqui!
+    -- Implementação vem aqui!
 	z1: zerador16 port map (
 		z => zx,
 		a => x,
@@ -127,9 +138,18 @@ begin
 		q => adderout
 	);
 
-	mux: mux16 port map(
+	multiplica: BarrelShifter16 port map(
+		a => nxout,
+		dir => f(0),
+		size => "001",
+		q => barrelout
+	);
+
+	mux: Mux4Way16 port map(
 		a => andout,
 		b => adderout,
+		c => barrelout,
+		d => barrelout,
 		sel => f,
 		q => muxout
 	);
@@ -143,7 +163,7 @@ begin
 	saida <= precomp;
 
 	comp: comparador16 port map (
-		a => precomp,
+		a => precomp,                                                      
 		zr => zr,
 		ng => ng
 	);
