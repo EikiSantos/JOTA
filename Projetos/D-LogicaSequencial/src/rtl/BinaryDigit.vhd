@@ -37,5 +37,18 @@ architecture arch of BinaryDigit is
 	signal dffout,muxout: std_logic;
 
 begin
+	mux: Mux2way port map(
+		a => input,
+		b => dffout,
+		sel => load
+		);
 
+	flipflop: FlipFlopD port map(
+		clock => clock,
+		clear => '0',
+		preset => '0',
+		d => muxout,
+		q => dffout
+	);
+	output <= dffout;
 end architecture;
