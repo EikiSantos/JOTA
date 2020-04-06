@@ -26,6 +26,13 @@ architecture arch of Register32 is
 	end component;
 
 begin
+	process(clock,load) begin
+		if (clock = '1' and load = '1') then
+			output <= input;
+		else
+			output<=output;
+		end if;
+	end process;
 
 
 end architecture;
