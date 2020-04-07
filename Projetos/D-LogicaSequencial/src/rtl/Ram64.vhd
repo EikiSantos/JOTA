@@ -57,8 +57,108 @@ architecture arch of Ram64 is
 
 	signal load0, load1, load2, load3, load4, load5, load6, load7 : STD_LOGIC;
 	signal output0, output1, output2, output3, output4, output5, output6, output7 : STD_LOGIC_VECTOR(15 downto 0);
+	signal address0, address1 : STD_LOGIC_VECTOR(2 downto 0);
+
 
 begin
 
 
+	address0 <= address(5 downto 3);
+	address1 <= address(2 downto 0);
+
+	unload: DMux8Way port map(
+		a => load,
+		sel => address0,
+		q0 => load0,
+		q1 => load1,
+		q2 => load2,
+		q3 => load3,
+		q4 => load4,
+		q5 => load5,
+		q6 => load6,
+		q7 => load7
+	);
+
+	-- Port maps dos registradores:
+
+	r0: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load0,
+		address => address1,
+		output => output0
+	);
+
+	r1: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load1,
+		address => address1,
+		output => output1
+	);
+	
+	r2: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load2,
+		address => address1,
+		output => output2
+	);
+
+	r3: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load3,
+		address => address1,
+		output => output3
+	);
+
+	r4: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load4,
+		address => address1,
+		output => output4
+	);
+
+	r5: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load5,
+		address => address1,
+		output => output5
+	);
+
+	r6: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load6,
+		address => address1,
+		output => output6
+	);
+
+	r7: Ram8 port map(
+		clock => clock,
+		input => input,
+		load => load7,
+		address => address1,
+		output => output7
+	);
+
+	-- Fim dos registradores.
+
+
+	outs: Mux8Way16 port map(
+		a => output0,
+		b => output1,
+		c => output2,
+		d => output3,
+		e => output4,
+		f => output5,
+		g => output6,
+		h => output7,
+		sel => address0,
+		q => output
+	);
+	
 end architecture;
