@@ -20,13 +20,14 @@ entity PC is
         load      : in  STD_LOGIC;
         reset     : in  STD_LOGIC;
         input     : in  STD_LOGIC_VECTOR(15 downto 0);
-        output    : out STD_LOGIC_VECTOR(15 downto 0)
+        output    : out STD_LOGIC_VECTOR(15 downto 0):= x"0000"
     );
 end entity;
 
 architecture arch of PC is
 
- signal muxOut : std_logic_vector(15 downto 0);
+ signal incOut, regOut : std_logic_vector(15 downto 0);
+ signal muxOut         : std_logic_vector(15 downto 0):= x"0000";
 
   component Inc16 is
       port(
@@ -35,16 +36,44 @@ architecture arch of PC is
           );
   end component;
 
-  component Register8 is
+  component Register16 is
       port(
           clock:   in STD_LOGIC;
-          input:   in STD_LOGIC_VECTOR(7 downto 0);
+          input:   in STD_LOGIC_VECTOR(15 downto 0);
           load:    in STD_LOGIC;
-          output: out STD_LOGIC_VECTOR(7 downto 0)
+          output: out STD_LOGIC_VECTOR(15 downto 0)
         );
     end component;
 
 begin
 
+    incrementador: Inc16 port map(
+        a => muxOut,
+        q => incOut
+    );
+
+    registrador: Register16 port map(
+        clock => clock,
+        input => input,
+        load => load,
+        output => regOut
+    );
+    process(clock)
+    begin
+        if rising_edge(clock) then
+            if (reset = '1') then
+                muxOut <= x"0000";
+                output <= x"0000";
+            elsif (load = '1') then
+                muxOut <= input;
+                output <= input;
+            elsif (increment = '1') then
+                muxOut <= incOut;
+                output <= incOut;
+            else
+                output <= muxOut;
+            end if;
+        end if;
+    end process;
 
 end architecture;
