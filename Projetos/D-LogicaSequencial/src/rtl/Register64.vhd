@@ -30,7 +30,7 @@ begin
 		if (clock = '1' and load = '1') then
 			output <= input;
 		else
-			output<=output;
+			output <= output;
 		end if;
 	end process;
 
