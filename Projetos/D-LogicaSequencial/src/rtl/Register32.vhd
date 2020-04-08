@@ -26,13 +26,20 @@ architecture arch of Register32 is
 	end component;
 
 begin
-	process(clock,load) begin
-		if (clock = '1' and load = '1') then
-			output <= input;
-		else
-			output<=output;
-		end if;
-	end process;
+	bit_reg32_0: Register16
+	port map(
+			clock => clock,
+			load => load,
+			input => input(15 downto 0),
+			output => output(15 downto 0)
+	);
 
+	bit_reg32_1: Register16
+	port map(
+			clock => clock,
+			load => load,
+			input => input(31 downto 16),
+			output => output(31 downto 16)
+	);
 
 end architecture;
