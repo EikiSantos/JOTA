@@ -26,13 +26,20 @@ architecture arch of Register16 is
 	end component;
 
 begin
-	process(clock,load) begin
-		if (clock = '1' and load = '1') then
-			output <= input;
-		else
-			output<=output;
-		end if;
-	end process;
+	bit_reg16_0: Register8
+	port map(
+			clock => clock,
+			load => load,
+			input => input(7 downto 0),
+			output => output(7 downto 0)
+	);
 
+	bit_reg16_1: Register8
+	port map(
+			clock => clock,
+			load => load,
+			input => input(15 downto 8),
+			output => output(15 downto 8)
+	);
 
 end architecture;
