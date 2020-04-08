@@ -26,12 +26,19 @@ architecture arch of Register64 is
 	end component;
 
 begin
-	process(clock,load) begin
-		if (clock = '1' and load = '1') then
-			output <= input;
-		else
-			output<=output;
-		end if;
-	end process;
+	bit_reg64_0: Register32
+	port map(
+			clock => clock,
+			load => load,
+			input => input(31 downto 0),
+			output => output(31 downto 0)
+	);
 
+	bit_reg64_1: Register32
+	port map(
+			clock => clock,
+			load => load,
+			input => input(63 downto 32),
+			output => output(63 downto 32)
+	);
 end architecture;
