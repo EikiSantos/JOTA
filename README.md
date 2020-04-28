@@ -16,6 +16,8 @@ $ # instale as dependencias python
 $ pip install -r requirements.txt --user
 ```
 
+## Foram utilizados códigos em assembly gerados pelo programa no seguinte repositório:
+[Repositório produtor de códigos assembly do aluno Carlos Dip](https://github.com/CEDipEngineering/Assembler)
 
 
 Vídeos do display de 7 segmentos da FPGA:
