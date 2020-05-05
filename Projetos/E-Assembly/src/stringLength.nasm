@@ -26,4 +26,37 @@
 ;  RAM[14] = `?`
 ;  RAM[15] = NULL = 0x0000
 
+leaw $0, %A
+movw %A, %D
+leaw $3, %A
+movw %D, (%A)
+leaw $8, %A
+movw %A, %D
+leaw $6, %A
+movw %D, (%A)
+; numero das rams na ram6
+leaw $8, %A
+movw (%A), %D
+leaw $0, %A
+while:
+leaw $3, %A
+movw (%A), %D
+addw %D, $1, (%A)
+leaw $6, %A
+movw (%A), %D
+addw %D, $1, (%A)
+movw (%A), %D
+movw %D, %A
+movw (%A), %D
+; D = ram6
+leaw $while, %A
+jg %D
+nop
+leaw $3, %A
+movw (%A), %D
+leaw $0, %A
+movw %D, (%A)
+
+
+
 
