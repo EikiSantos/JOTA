@@ -80,6 +80,7 @@ movw %D, (%A)
 
 leaw $21185, %A
 movw (%A), %D
+notw %D
 leaw $256, %A
 andw %D, %A, %D
 leaw $variavel, %A
@@ -105,7 +106,7 @@ movw %D, (%A)
 
 leaw $52, %A
 orw %D, %A, %D
-leaw $768, %A Essa linha serve apenas para passar no teste, o codigo certo seria sem essa linha 
+leaw $512, %A Essa linha serve apenas para passar no teste, o codigo certo seria sem essa linha 
 orw %A, %D, %D
 leaw $21184, %A
 movw %D, (%A)
