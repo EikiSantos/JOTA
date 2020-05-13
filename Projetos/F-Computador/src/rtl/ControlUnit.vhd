@@ -21,14 +21,35 @@ entity ControlUnit is
                                                                      -- reg. A e Mem. RAM para ALU
                                                                      -- A  e Mem. RAM para ALU
 		zx, nx, zy, ny, f, no       : out STD_LOGIC;                     -- sinais de controle da ALU
-		loadA, loadD, loadM, loadPC : out STD_LOGIC               -- sinais de load do reg. A,
+		loadA, loadD, loadM, loadPC : out STD_LOGIC                      -- sinais de load do reg. A,
                                                                      -- reg. D, Mem. RAM e Program Counter
     );
 end entity;
 
 architecture arch of ControlUnit is
 
-begin
+  signal tipoA                  : STD_LOGIC;
 
+begin
+  tipoA <= instruction(17);
+  muxALUI_A <= not tipoA;
+  loadA <= not tipoA or instruction(3);
+  loadD <= tipoA and instruction(4);
+  loadM <= tipoA and instruction(5);
+  
+  loadPC <= '0' when not tipoA else
+            '0' when (instruction(2 downto 0) = "000") else
+            '0' when (not instruction(2)  and ng) else
+            '0' when (not instruction(0)  and not ng) else
+            '0' when (not instruction(1)  and zr) 
+            else '1';
+
+  muxAM <= tipoA and instruction(13);
+  zx <= tipoA and instruction(12);
+  nx <= tipoA and instruction(11);
+  zy <= tipoA and instruction(10);
+  ny <= tipoA and instruction(9);
+  f <= tipoA and instruction(8);
+  no <= tipoA and instruction(7);
 
 end architecture;
