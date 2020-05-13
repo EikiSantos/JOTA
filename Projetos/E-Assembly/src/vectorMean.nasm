@@ -19,3 +19,72 @@
 ; RAM[7]:  1  | RAM[7]:  1 |
 ; RAM[8]:  4  | RAM[8]:  4 -
 ; ------------------------------------
+
+leaw $5, %A
+movw %A, %D
+leaw $2, %A
+movw %D, (%A)
+while:
+leaw $2, %A
+movw (%A), %D
+movw %D, %A
+movw (%A), %D
+leaw $0, %A
+addw %D, (%A), %D
+movw %D, (%A)
+leaw $2, %A
+movw (%A), %D
+incw %D
+movw %D, (%A)
+leaw $3, %A
+movw (%A), %D
+incw %D
+movw %D, (%A)
+leaw $4, %A
+subw (%A), %D, %D
+leaw $while, %A
+jg %D
+nop
+;fiz a soma na ram[0], tenho que mudar para ram[1]
+leaw $0, %A
+movw (%A), %D
+leaw $1, %A
+movw %D, (%A)
+; soma no [1]
+leaw $0, %A
+movw %A, (%A)
+leaw $1, %A
+movw (%A), %D
+leaw $2, %A
+movw %D, (%A)
+; Copiado a ram[1] para ram[2]
+
+; metodo de div divide ram0 por ram1 e guarda em ram2
+; nosso caso, divide ram1 por ram4 e guarda em ram0
+loop:
+leaw $1, %A
+movw (%A), %D
+leaw $3, %A
+movw %D, (%A)
+leaw $4, %A
+subw %D, (%A), %A
+movw %A, %D
+leaw $1, %A
+movw %D, (%A)
+leaw $0,  %A
+movw (%A), %D
+incw %D
+movw %D, (%A)
+leaw $1, %A
+movw (%A), %D
+leaw $loop, %A
+jg %D
+nop
+
+; mover ram[2] para ram[1]
+leaw $2, %A
+movw (%A), %D
+leaw $1, %A
+movw %D, (%A)
+
+
