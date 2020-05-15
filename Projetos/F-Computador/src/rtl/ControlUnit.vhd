@@ -37,11 +37,11 @@ begin
   loadD <= tipoA and instruction(4);
   loadM <= tipoA and instruction(5);
   
-  loadPC <= '0' when not tipoA else
+  loadPC <= '0' when tipoA = '0' else
             '0' when (instruction(2 downto 0) = "000") else
-            '0' when (not instruction(2)  and ng) else
-            '0' when (not instruction(0)  and not ng) else
-            '0' when (not instruction(1)  and zr) 
+            '0' when (instruction(2) = '0' and ng = '1') else
+            '0' when (instruction(0) = '0' and ng = '0') else
+            '0' when (instruction(1) = '0' and zr = '1') 
             else '1';
 
   muxAM <= tipoA and instruction(13);
