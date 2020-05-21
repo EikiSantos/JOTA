@@ -65,7 +65,7 @@ architecture arch of CPU is
       );
   end component;
 
-  component ControlUnit is
+  component ControlUnit is 
     port(
       instruction                 : in STD_LOGIC_VECTOR(17 downto 0);
       zr,ng                       : in STD_LOGIC;
@@ -87,8 +87,8 @@ architecture arch of CPU is
   signal c_loadA: STD_LOGIC;
   signal c_loadD: STD_LOGIC;
   signal c_loadPC: STD_LOGIC;
-  signal c_zr: std_logic := '0';
-  signal c_ng: std_logic := '0';
+  signal c_zr: STD_LOGIC;
+  signal c_ng: STD_LOGIC;
 
   signal s_muxALUI_Aout: STD_LOGIC_VECTOR(15 downto 0);
   signal s_muxAM_out: STD_LOGIC_VECTOR(15 downto 0);
@@ -99,5 +99,77 @@ architecture arch of CPU is
   signal s_pcout: STD_LOGIC_VECTOR(15 downto 0);
 
 begin
+
+  ULA: ALU port map(
+    x => s_regDout,
+    y => s_muxAM_out,
+    zx => c_zx,
+    zy => c_zy,
+    nx => c_nx,
+    ny => c_ny,
+    f => c_f,
+    no => c_no,
+    zr => c_zr,
+    ng => c_ng,
+    saida => s_ALUout
+  );
+
+  CtrlUnit: ControlUnit port map(
+    instruction => instruction,         
+    zr => c_zr,
+    ng => c_ng,                   
+    muxALUI_A => c_muxALUI_A,                 
+    muxAM => c_muxAM,
+    zx => c_zx,
+    nx => c_nx,
+    zy => c_zy,
+    ny => c_ny,
+    f => c_f,
+    no => c_no,
+    loadA => c_loadA,
+    loadD => c_loadD,
+    loadM => writeM,
+    loadPC => c_loadPC
+  );
+  
+  ProgramCounter: pc port map(
+    clock => clock,
+    increment => (c_loadPC nor reset),
+    load => c_loadPC,
+    reset => reset,
+    input => s_regAout,
+    output => s_pcout
+  );
+  
+  REGA: Register16 port map(
+    clock => clock,
+    input => s_muxALUI_Aout,
+    load => c_loadA,
+    output => s_regAout
+  );
+
+  REGD: Register16 port map(
+    clock => clock,
+    input => s_ALUout,
+    load => c_loadD,
+    output => s_regDout
+  );
+
+  muxALUI: Mux16 port map(
+    a => s_ALUout,
+    b => instruction(15 downto 0),
+    sel => c_muxALUI_A,
+    q => s_muxALUI_Aout
+  );
+
+  muxAM: Mux16 port map(
+    a => s_regAout,
+    b => inM,
+    sel => c_muxAM,
+    q => s_muxAM_out
+  );
+
+  addressM <= s_regAout(14 downto 0);
+  pcout <= s_pcout(14 downto 0);
 
 end architecture;
