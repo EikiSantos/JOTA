@@ -87,8 +87,8 @@ architecture arch of CPU is
   signal c_loadA: STD_LOGIC;
   signal c_loadD: STD_LOGIC;
   signal c_loadPC: STD_LOGIC;
-  signal c_zr: STD_LOGIC;
-  signal c_ng: STD_LOGIC;
+  signal c_zr: STD_LOGIC:='0';
+  signal c_ng: STD_LOGIC:='0';
 
   signal s_muxALUI_Aout: STD_LOGIC_VECTOR(15 downto 0);
   signal s_muxAM_out: STD_LOGIC_VECTOR(15 downto 0);
@@ -134,7 +134,7 @@ begin
   
   ProgramCounter: pc port map(
     clock => clock,
-    increment => (c_loadPC nor reset),
+    increment => '1',
     load => c_loadPC,
     reset => reset,
     input => s_regAout,
@@ -171,5 +171,6 @@ begin
 
   addressM <= s_regAout(14 downto 0);
   pcout <= s_pcout(14 downto 0);
-
+  outM <= s_ALUout;
+  
 end architecture;
