@@ -71,13 +71,15 @@ architecture arch of CPU is
       zr,ng                       : in STD_LOGIC;
       muxALUI_A                   : out STD_LOGIC;
       muxAM                       : out STD_LOGIC;
+      muxDS                       : out STD_LOGIC;
       zx, nx, zy, ny, f, no       : out STD_LOGIC;
-      loadA, loadD, loadM, loadPC : out STD_LOGIC
+      loadA, loadD, loadM, loadPC, loadS : out STD_LOGIC
       );
   end component;
 
   signal c_muxALUI_A: STD_LOGIC;
   signal c_muxAM: STD_LOGIC;
+  signal c_muxDS: STD_LOGIC;
   signal c_zx: STD_LOGIC;
   signal c_nx: STD_LOGIC;
   signal c_zy: STD_LOGIC;
@@ -86,14 +88,17 @@ architecture arch of CPU is
   signal c_no: STD_LOGIC;
   signal c_loadA: STD_LOGIC;
   signal c_loadD: STD_LOGIC;
+  signal c_loadS: STD_LOGIC;
   signal c_loadPC: STD_LOGIC;
   signal c_zr: std_logic:='0';
   signal c_ng: std_logic:='0';
 
   signal s_muxALUI_Aout: STD_LOGIC_VECTOR(15 downto 0);
   signal s_muxAM_out: STD_LOGIC_VECTOR(15 downto 0);
+  signal s_muxDS_out: STD_LOGIC_VECTOR(15 downto 0);
   signal s_regAout: STD_LOGIC_VECTOR(15 downto 0);
   signal s_regDout: STD_LOGIC_VECTOR(15 downto 0);
+  signal s_regSout: STD_LOGIC_VECTOR(15 downto 0);
   signal s_ALUout: STD_LOGIC_VECTOR(15 downto 0);
 
   signal s_pcout: STD_LOGIC_VECTOR(15 downto 0);
@@ -101,7 +106,7 @@ architecture arch of CPU is
 begin
 
   ULA: ALU port map(
-    x => s_regDout,
+    x => s_muxDS_out,
     y => s_muxAM_out,
     zx => c_zx,
     zy => c_zy,
@@ -120,6 +125,7 @@ begin
     ng => c_ng,                   
     muxALUI_A => c_muxALUI_A,                 
     muxAM => c_muxAM,
+    muxDS => c_muxDS,
     zx => c_zx,
     nx => c_nx,
     zy => c_zy,
@@ -128,6 +134,7 @@ begin
     no => c_no,
     loadA => c_loadA,
     loadD => c_loadD,
+    loadS => c_loadS,
     loadM => writeM,
     loadPC => c_loadPC
   );
@@ -154,6 +161,21 @@ begin
     load => c_loadD,
     output => s_regDout
   );
+
+  REGS: Register16 port map(
+    clock => clock,
+    input => s_ALUout,
+    load => c_loadS,
+    output => s_regSout
+  );
+
+  muxDS: Mux16 port map(
+    a => s_regDout,
+    b => s_regSout,
+    sel => c_muxDS,
+    q => s_muxDS_out
+  );
+
 
   muxALUI: Mux16 port map(
     a => s_ALUout,
