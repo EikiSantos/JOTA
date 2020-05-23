@@ -54,7 +54,7 @@ architecture arch of CPU is
       );
   end component;
 
-  component pc is
+  component PC is
     port(
       clock     : in  STD_LOGIC;
       increment : in  STD_LOGIC;
@@ -87,8 +87,8 @@ architecture arch of CPU is
   signal c_loadA: STD_LOGIC;
   signal c_loadD: STD_LOGIC;
   signal c_loadPC: STD_LOGIC;
-  signal c_zr: STD_LOGIC:='0';
-  signal c_ng: STD_LOGIC:='0';
+  signal c_zr: std_logic:='0';
+  signal c_ng: std_logic:='0';
 
   signal s_muxALUI_Aout: STD_LOGIC_VECTOR(15 downto 0);
   signal s_muxAM_out: STD_LOGIC_VECTOR(15 downto 0);
@@ -132,7 +132,7 @@ begin
     loadPC => c_loadPC
   );
   
-  ProgramCounter: pc port map(
+  ProgramCounter: PC port map(
     clock => clock,
     increment => '1',
     load => c_loadPC,
