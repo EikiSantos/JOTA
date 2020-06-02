@@ -53,7 +53,8 @@ public class Code {
 
             case 4  :
                 switch (mnemnonic[0]) {
-                    case "movw" :                return "0111";
+                    case "movw" :
+                        return "0111";
                     default:
                         switch (mnemnonic[3]) {
                             case "%A"  :

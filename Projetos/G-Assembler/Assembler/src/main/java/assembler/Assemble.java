@@ -55,12 +55,15 @@ public class Assemble {
         while (parser.advance()){
             if (parser.commandType(parser.command()) == Parser.CommandType.L_COMMAND) {
                 String label = parser.label(parser.command());
-                /* TODO: implementar */
-                // deve verificar se tal label já existe na tabela,
-                // se não, deve inserir. Caso contrário, ignorar.
+                if(!table.contains(label)) {
+                    table.addEntry(label, romAddress);
+                    romAddress--;
+                }
             }
+
             romAddress++;
         }
+
         parser.close();
 
         // a segunda passada pelo código deve buscar pelas variáveis
@@ -74,10 +77,10 @@ public class Assemble {
             if (parser.commandType(parser.command()) == Parser.CommandType.A_COMMAND) {
                 String symbol = parser.symbol(parser.command());
                 if (Character.isDigit(symbol.charAt(0))){
-                    /* TODO: implementar */
-                    // deve verificar se tal símbolo já existe na tabela,
-                    // se não, deve inserir associando um endereço de
-                    // memória RAM a ele.
+                    if(!table.contains(symbol)){
+                        table.addEntry(symbol, ramAddress);
+                        ramAddress++;
+                    }
                 }
             }
         }
@@ -103,21 +106,37 @@ public class Assemble {
          * seguindo o instruction set
          */
         while (parser.advance()){
+            System.out.println(parser.command());
             switch (parser.commandType(parser.command())){
                 /* TODO: implementar */
                 case C_COMMAND:
-                break;
-            case A_COMMAND:
-                break;
-            default:
-                continue;
+                    String[] instrucao = parser.instruction(parser.command());
+                    instruction = "10"+ Code.comp(instrucao) + Code.dest(instrucao) + Code.jump(instrucao);
+                    break;
+                case A_COMMAND:
+                    String symbol2 = parser.symbol(parser.command());
+                    System.out.println(symbol2);
+                    if (table.contains(symbol2)){
+                        int symbolAddress = table.getAddress(symbol2);
+                        instruction = Code.toBinary(String.valueOf(symbolAddress));
+                        System.out.println(symbolAddress);
+                        System.out.println("A");
+                    }else{
+                        instruction = Code.toBinary(symbol2);
+                        System.out.println(instruction);
+                    }
+
+                    break;
+                default:
+
+                    continue;
             }
-            // Escreve no arquivo .hack a instrução
-            if(outHACK!=null) {
-                outHACK.println(instruction);
-            }
-            instruction = null;
         }
+        // Escreve no arquivo .hack a instrução
+        if(outHACK!=null) {
+            outHACK.println(instruction);
+        }
+        instruction = null;
     }
 
     /**
