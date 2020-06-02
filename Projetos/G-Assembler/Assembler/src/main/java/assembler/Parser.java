@@ -137,15 +137,16 @@ public class Parser {
      * @return um vetor de string contento os tokens da instrução (as partes do comando).
      */
     public String[] instruction(String command) {
-        if (command.split(" ").length == 1) {
-            return new String[]{command};
-        }
-        String[] commands = command.split(" ")[1].split(",");
-        String[] output = new String[commands.length + 1];
-        output[0] = command.split(" ")[0];
-        for (int i = 1; i<output.length; i++){
-            output[i] = commands[i-1];
-        }
+//        System.out.println(command);
+        String noCommas = command.replace(',', ' ');
+        String[] output = noCommas.split(" ");
+//
+//        System.out.println("");
+//        System.out.print("Array: [");
+//        for (String str : output){
+//            System.out.print(str + ", ");
+//        }
+//        System.out.print(" ]");
         return output;
     }
 
