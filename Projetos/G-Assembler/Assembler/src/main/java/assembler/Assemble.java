@@ -76,7 +76,7 @@ public class Assemble {
         while (parser.advance()){
             if (parser.commandType(parser.command()) == Parser.CommandType.A_COMMAND) {
                 String symbol = parser.symbol(parser.command());
-                if (Character.isDigit(symbol.charAt(0))){
+                if (!Character.isDigit(symbol.charAt(0))){
                     if(!table.contains(symbol)){
                         table.addEntry(symbol, ramAddress);
                         ramAddress++;
@@ -105,38 +105,44 @@ public class Assemble {
          * de instrução válida do nasm
          * seguindo o instruction set
          */
-        while (parser.advance()){
+        while (parser.advance()) {
             System.out.println(parser.command());
-            switch (parser.commandType(parser.command())){
+            switch (parser.commandType(parser.command())) {
                 /* TODO: implementar */
                 case C_COMMAND:
                     String[] instrucao = parser.instruction(parser.command());
-                    instruction = "10"+ Code.comp(instrucao) + Code.dest(instrucao) + Code.jump(instrucao);
+                    instruction = "10" + Code.comp(instrucao) + Code.dest(instrucao) + Code.jump(instrucao);
+                    for(String s:instrucao) {
+                        //System.out.println(s);
+                    }
+                    //System.out.println("B");
                     break;
                 case A_COMMAND:
                     String symbol2 = parser.symbol(parser.command());
-                    System.out.println(symbol2);
-                    if (table.contains(symbol2)){
-                        int symbolAddress = table.getAddress(symbol2);
-                        instruction = Code.toBinary(String.valueOf(symbolAddress));
-                        System.out.println(symbolAddress);
-                        System.out.println("A");
-                    }else{
-                        instruction = Code.toBinary(symbol2);
-                        System.out.println(instruction);
+                    if (!Character.isDigit(symbol2.charAt(0))) {
+                        //System.out.println(symbol2);
+                        if (table.contains(symbol2)) {
+                            int symbolAddress = table.getAddress(symbol2);
+                            instruction = "00" + Code.toBinary(String.valueOf(symbolAddress));
+                            //System.out.println(symbolAddress);
+                            //System.out.println("A");
+                        }
+                    } else {
+                        instruction = "00" + Code.toBinary(symbol2);
+                        //System.out.println(instruction);
+                        //System.out.println("C");
                     }
 
                     break;
                 default:
-
                     continue;
             }
+            // Escreve no arquivo .hack a instrução
+            if (outHACK != null) {
+                outHACK.println(instruction);
+            }
+            instruction = null;
         }
-        // Escreve no arquivo .hack a instrução
-        if(outHACK!=null) {
-            outHACK.println(instruction);
-        }
-        instruction = null;
     }
 
     /**
