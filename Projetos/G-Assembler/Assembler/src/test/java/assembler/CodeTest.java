@@ -106,19 +106,7 @@ public class CodeTest  {
 			assertTrue("jge",Code.dest(new String[] {"jge"}).equals("0000"));
 			assertTrue("jl",Code.dest(new String[] {"jl"}).equals("0000"));
 			assertTrue("jle",Code.dest(new String[] {"jle"}).equals("0000"));
-			
-// CODIGOS EXTRAS ADICIONADOS PELOS ALUNOS
-			assertTrue("movw %A, %D, (%A)"		  ,Code.dest(new String[] {"movw","%A","%D","(%A)"}).equals("0110"));
-			assertTrue("movw %A, %D, (%A), %S"  ,Code.dest(new String[] {"movw","%A","%D","(%A)","%S"}).equals("0111"));
-			assertTrue("movw %D, %A"		        ,Code.dest(new String[] {"movw","%D","%A"}).equals("0001"));
-			assertTrue("movw %D, %A, (%A)"		  ,Code.dest(new String[] {"movw","%D","%A","(%A)"}).equals("0101"));
-			assertTrue("movw (%A), %A, %D"		  ,Code.dest(new String[] {"movw","(%A)","%A","%A"}).equals("0011"));
-			assertTrue("addw (%A) %D %D %A"     ,Code.dest(new String[] {"addw","(%A)","%D","%D","%A"}).equals("0011"));
-			assertTrue("subw %D (%A) %A %D"     ,Code.dest(new String[] {"subw","%D","(%A)","%A","%D"}).equals("0011"));
-			assertTrue("rsubw %D %A %A (%A)"    ,Code.dest(new String[] {"rsubw","%D","%A","%A","(%A)"}).equals("0101"));
-			assertTrue("addw %A %D %D %A %S"    ,Code.dest(new String[] {"addw","(%A)","%D","%D","%S"}).equals("0111"));
-			assertTrue("subw %D (%A) %A %S"     ,Code.dest(new String[] {"subw","%D","(%A)","%A","%S"}).equals("0111"));
-			assertTrue("rsubw %D (%A) %A %S"    ,Code.dest(new String[] {"rsubw","%D","(%A)","%A","%S"}).equals("0111"));
+
 
 
 		} catch(Exception e) {

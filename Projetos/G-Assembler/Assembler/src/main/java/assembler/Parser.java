@@ -139,7 +139,7 @@ public class Parser {
     public String[] instruction(String command) {
 //        System.out.println(command);
         String noCommas = command.replace(',', ' ');
-        String[] output = noCommas.split(" ");
+        String[] output = noCommas.split("\\s+");
 //
 //        System.out.println("");
 //        System.out.print("Array: [");
